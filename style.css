@@ -16,7 +16,6 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 3vh 5vw;
-    position: relative;
 }
 
 .logo {
@@ -47,43 +46,106 @@ nav {
     cursor: pointer;
 }
 
-.mobile-menu-container {
-    display: none;
+/* =========================================
+   MOBILE MENU & HAMBURGER LOGIC
+   ========================================= */
+.mobile-nav {
+    display: none; /* Hidden on desktop */
 }
 
 .hamburger-btn {
     background: none;
     border: none;
-    font-size: 30px;
     cursor: pointer;
-    color: #4b5563;
+    z-index: 1001; /* Must be higher than the menu to stay clickable */
+    position: relative;
 }
 
+/* Styling the 3 lines of the hamburger */
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    transition: all 0.3s ease;
+    background-color: #4b5563;
+}
+
+/* ANIMATING THE X: 
+  When the button is clicked (focused), I rotate the top and bottom bars 45 degrees 
+  and hide the middle bar by changing its opacity.
+*/
+.hamburger-btn:focus .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.hamburger-btn:focus .bar:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-btn:focus .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* FULL VIEWPORT MENU: 
+  Fixed position starting at top:0 makes it cover the whole screen, not just under the navbar.
+*/
 .side-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 0;
     right: 0;
-    width: 60vw;
+    width: 250px;
     height: 100vh;
-    background-color: black;
+    background-color: #1f2937;
+    display: flex;
     flex-direction: column;
+    padding-top: 100px; /* Push links down below the X button */
     align-items: center;
-    padding-top: 10vh;
+    
+    /* Starts off-screen to the right so it can slide in */
+    transform: translateX(100%); 
+    transition: transform 0.4s ease;
     z-index: 1000;
 }
 
 .side-menu a {
     color: white;
     text-decoration: none;
-    font-size: 4vw;
-    margin-bottom: 3vh;
+    font-size: 20px;
+    margin-bottom: 30px;
 }
 
-.hamburger-btn:focus + .side-menu {
-    display: flex;
+/* The dark overlay behind the menu */
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    z-index: 999;
 }
 
+/* THE MAGIC TRIGGER: 
+  If the hamburger button is focused, OR if I am hovering over the menu itself,
+  slide the menu in (translateX 0) and show the backdrop.
+*/
+.hamburger-btn:focus ~ .side-menu,
+.side-menu:hover {
+    transform: translateX(0);
+}
+
+.hamburger-btn:focus ~ .backdrop,
+.side-menu:hover ~ .backdrop {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================
+   HERO SECTION
+   ========================================= */
 .hero {
     display: flex;
     align-items: center;
@@ -91,12 +153,11 @@ nav {
     padding: 5vh 8vw;
 }
 
-.hero-left {
+.hero-left, .hero-right {
     flex: 1;
 }
 
 .hero-right {
-    flex: 1;
     display: flex;
     justify-content: center;
 }
@@ -137,82 +198,42 @@ nav {
     object-fit: contain;
 }
 
-@media (max-width: 1024px) {
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; 
+    }
+    .mobile-nav {
+        display: block; 
+    }
     .logo {
-        font-size: 4vw;
+        font-size: 6vw;
     }
-
-    .nav-links a {
-        font-size: 2.5vw;
-    }
-
     .user-btn {
-        font-size: 2.5vw;
+        display: none; /* Hiding the user button to save space on mobile header */
     }
-
+    
     .hero {
         flex-direction: column;
         text-align: center;
     }
-
     .hero-left {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-bottom: 5vh;
     }
-
     .hero-left h1 {
-        font-size: 6vw;
+        font-size: 7vw;
     }
-
     .hero-left p {
-        font-size: 3vw;
+        font-size: 4vw;
         width: 100%;
     }
-
     .book-btn {
-        font-size: 3vw;
-        padding: 2vh 5vw;
-    }
-
-    .hero-right img {
-        width: 70%;
-        max-height: 50vh;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-
-    .mobile-menu-container {
-        display: block;
-    }
-
-    .logo {
-        font-size: 6vw;
-    }
-
-    .user-btn {
         font-size: 4vw;
-        padding: 1.5vh 4vw;
-    }
-
-    .hero-left h1 {
-        font-size: 8vw;
-    }
-
-    .hero-left p {
-        font-size: 4.5vw;
-    }
-
-    .book-btn {
-        font-size: 4.5vw;
         padding: 2vh 6vw;
     }
-
     .hero-right img {
         width: 95%;
     }
