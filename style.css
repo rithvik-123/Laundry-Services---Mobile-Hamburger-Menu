@@ -47,21 +47,20 @@ nav {
 }
 
 /* =========================================
-   MOBILE MENU & HAMBURGER LOGIC
+   MOBILE MENU LOGIC (The tricky part)
    ========================================= */
 .mobile-nav {
-    display: none; /* Hidden on desktop */
+    display: none; 
 }
 
 .hamburger-btn {
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 1001; /* Must be higher than the menu to stay clickable */
+    z-index: 1001; 
     position: relative;
 }
 
-/* Styling the 3 lines of the hamburger */
 .bar {
     display: block;
     width: 25px;
@@ -71,10 +70,8 @@ nav {
     background-color: #4b5563;
 }
 
-/* ANIMATING THE X: 
-  When the button is clicked (focused), I rotate the top and bottom bars 45 degrees 
-  and hide the middle bar by changing its opacity.
-*/
+/* I spent way too long trying to animate this into an X. 
+   Basically rotating the top and bottom bars 45 degrees when the button is focused. */
 .hamburger-btn:focus .bar:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
 }
@@ -85,8 +82,8 @@ nav {
     transform: translateY(-8px) rotate(-45deg);
 }
 
-/* FULL VIEWPORT MENU: 
-  Fixed position starting at top:0 makes it cover the whole screen, not just under the navbar.
+/* I learned that display:none doesn't work with transitions!
+   So I had to use transform: translateX(100%) to push it off the screen to the right instead.
 */
 .side-menu {
     position: fixed;
@@ -97,10 +94,9 @@ nav {
     background-color: #1f2937;
     display: flex;
     flex-direction: column;
-    padding-top: 100px; /* Push links down below the X button */
+    padding-top: 50px; 
     align-items: center;
     
-    /* Starts off-screen to the right so it can slide in */
     transform: translateX(100%); 
     transition: transform 0.4s ease;
     z-index: 1000;
@@ -113,7 +109,17 @@ nav {
     margin-bottom: 30px;
 }
 
-/* The dark overlay behind the menu */
+/* Styling the new close button */
+.close-btn {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 5px 15px;
+    margin-bottom: 40px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
 .backdrop {
     position: fixed;
     top: 0;
@@ -127,9 +133,9 @@ nav {
     z-index: 999;
 }
 
-/* THE MAGIC TRIGGER: 
-  If the hamburger button is focused, OR if I am hovering over the menu itself,
-  slide the menu in (translateX 0) and show the backdrop.
+/* Here is the trick for the menu.
+   If the hamburger button is focused (clicked), show the menu.
+   I also added :hover on the side-menu so it doesn't disappear when my mouse moves over it.
 */
 .hamburger-btn:focus ~ .side-menu,
 .side-menu:hover {
@@ -198,7 +204,6 @@ nav {
     object-fit: contain;
 }
 
-/* Mobile adjustments */
 @media (max-width: 768px) {
     .nav-links {
         display: none; 
@@ -210,7 +215,7 @@ nav {
         font-size: 6vw;
     }
     .user-btn {
-        display: none; /* Hiding the user button to save space on mobile header */
+        display: none; 
     }
     
     .hero {
