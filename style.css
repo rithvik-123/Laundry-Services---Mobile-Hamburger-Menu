@@ -47,7 +47,7 @@ nav {
 }
 
 /* =========================================
-   MOBILE MENU LOGIC (The tricky part)
+   MOBILE MENU LOGIC
    ========================================= */
 .mobile-nav {
     display: none; 
@@ -70,8 +70,7 @@ nav {
     background-color: #4b5563;
 }
 
-/* I spent way too long trying to animate this into an X. 
-   Basically rotating the top and bottom bars 45 degrees when the button is focused. */
+/* Animating the hamburger into an X */
 .hamburger-btn:focus .bar:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
 }
@@ -82,9 +81,6 @@ nav {
     transform: translateY(-8px) rotate(-45deg);
 }
 
-/* I learned that display:none doesn't work with transitions!
-   So I had to use transform: translateX(100%) to push it off the screen to the right instead.
-*/
 .side-menu {
     position: fixed;
     top: 0;
@@ -96,7 +92,6 @@ nav {
     flex-direction: column;
     padding-top: 50px; 
     align-items: center;
-    
     transform: translateX(100%); 
     transition: transform 0.4s ease;
     z-index: 1000;
@@ -109,7 +104,6 @@ nav {
     margin-bottom: 30px;
 }
 
-/* Styling the new close button */
 .close-btn {
     background: none;
     border: 1px solid white;
@@ -133,17 +127,15 @@ nav {
     z-index: 999;
 }
 
-/* Here is the trick for the menu.
-   If the hamburger button is focused (clicked), show the menu.
-   I also added :hover on the side-menu so it doesn't disappear when my mouse moves over it.
+/* THE FIX: 
+   Removed the :hover state entirely. Now, ONLY the hamburger focus controls the menu. 
+   When the Close button is clicked, it steals the focus, and this rule stops applying.
 */
-.hamburger-btn:focus ~ .side-menu,
-.side-menu:hover {
+.hamburger-btn:focus ~ .side-menu {
     transform: translateX(0);
 }
 
-.hamburger-btn:focus ~ .backdrop,
-.side-menu:hover ~ .backdrop {
+.hamburger-btn:focus ~ .backdrop {
     opacity: 1;
     visibility: visible;
 }
@@ -196,12 +188,55 @@ nav {
     font-size: 1.2vw;
     font-weight: bold;
     cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.book-btn:hover {
+    background-color: #0284c7;
+    transform: scale(1.1) rotate(-4deg);
 }
 
 .hero-right img {
     width: 90%;
     max-height: 70vh;
     object-fit: contain;
+}
+
+@media (max-width: 1024px) {
+    .logo {
+        font-size: 4vw;
+    }
+    .nav-links a {
+        font-size: 2.5vw;
+    }
+    .user-btn {
+        font-size: 2.5vw;
+    }
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+    .hero-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 5vh;
+    }
+    .hero-left h1 {
+        font-size: 6vw;
+    }
+    .hero-left p {
+        font-size: 3vw;
+        width: 100%;
+    }
+    .book-btn {
+        font-size: 3vw;
+        padding: 2vh 5vw;
+    }
+    .hero-right img {
+        width: 70%;
+        max-height: 50vh;
+    }
 }
 
 @media (max-width: 768px) {
@@ -217,7 +252,6 @@ nav {
     .user-btn {
         display: none; 
     }
-    
     .hero {
         flex-direction: column;
         text-align: center;
